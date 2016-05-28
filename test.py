@@ -8,7 +8,6 @@ TESTS = OrderedDict([
     ('has_vowel', 'validation_test.HasVowelTests'),
     ('is_integer', 'validation_test.IsIntegerTests'),
     ('is_fraction', 'validation_test.IsFractionTests'),
-    ('is_valid_time', 'validation_test.IsValidTimeTests'),
     ('is_valid_date', 'validation_test.IsValidDateTests'),
     ('tetravocalic', 'search_test.TetravocalicTests'),
     ('hexadecimal', 'search_test.HexadecimalTests'),

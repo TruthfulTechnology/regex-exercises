@@ -19,10 +19,6 @@ def is_fraction(string):
     """Return True iff the string represents a valid fraction."""
 
 
-def is_valid_time(string):
-    """Return True iff the string represents a valid 24 hour time."""
-
-
 def is_valid_date(string):
     """Return True iff the string represents a valid YYYY-MM-DD date."""
 

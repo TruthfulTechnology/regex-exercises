@@ -162,4 +162,4 @@ class GetMarkdownLinksTests(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    unittest.main()
+    raise SystemExit("No CLI for this file.  Run test.py instead.")
