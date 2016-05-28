@@ -2,8 +2,8 @@
 import unittest
 
 
-from validation import (has_vowel, is_integer, is_fraction, is_valid_date,
-                        is_number, is_hex_color)
+from validation import (has_vowel, is_integer, is_fraction, is_number,
+                        is_hex_color, is_valid_date)
 
 
 class HasVowelTests(unittest.TestCase):
@@ -108,30 +108,6 @@ class IsFractionTests(unittest.TestCase):
         self.assertFalse(is_fraction("5a"))
 
 
-class IsValidDateTests(unittest.TestCase):
-
-    def test_this_year(self):
-        self.assertTrue(is_valid_date("2016-01-02"))
-
-    def test_1990(self):
-        self.assertTrue(is_valid_date("1900-01-01"))
-
-    def test_invalid_day(self):
-        self.assertFalse(is_valid_date("2016-02-99"))
-
-    def test_invalid_year(self):
-        self.assertFalse(is_valid_date("20-02-20"))
-
-    def test_invalid_month(self):
-        self.assertFalse(is_valid_date("1980-30-05"))
-
-    def test_leading_garbage(self):
-        self.assertFalse(is_valid_date("12016-01-02"))
-
-    def test_trailing_garbage(self):
-        self.assertFalse(is_valid_date("2016-01-020"))
-
-
 class IsNumberTests(unittest.TestCase):
 
     def test_5(self):
@@ -205,6 +181,30 @@ class IsHexColorTests(unittest.TestCase):
 
     def test_leading_garbage(self):
         self.assertFalse(is_hex_color("a#639"))
+
+
+class IsValidDateTests(unittest.TestCase):
+
+    def test_this_year(self):
+        self.assertTrue(is_valid_date("2016-01-02"))
+
+    def test_1990(self):
+        self.assertTrue(is_valid_date("1900-01-01"))
+
+    def test_invalid_day(self):
+        self.assertFalse(is_valid_date("2016-02-99"))
+
+    def test_invalid_year(self):
+        self.assertFalse(is_valid_date("20-02-20"))
+
+    def test_invalid_month(self):
+        self.assertFalse(is_valid_date("1980-30-05"))
+
+    def test_leading_garbage(self):
+        self.assertFalse(is_valid_date("12016-01-02"))
+
+    def test_trailing_garbage(self):
+        self.assertFalse(is_valid_date("2016-01-020"))
 
 
 if __name__ == "__main__":

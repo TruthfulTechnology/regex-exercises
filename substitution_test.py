@@ -3,24 +3,9 @@ from textwrap import dedent
 import unittest
 
 
-from substitution import (get_extension, normalize_jpeg, normalize_whitespace,
+from substitution import (normalize_jpeg, normalize_whitespace,
                           compress_blank_lines, normalize_domain,
                           convert_linebreaks)
-
-
-class GetExtensionTests(unittest.TestCase):
-
-    def test_zip(self):
-        self.assertEqual(get_extension('archive.zip'), 'zip')
-
-    def test_jpeg(self):
-        self.assertEqual(get_extension('image.jpeg'), 'jpeg')
-
-    def test_xhtml(self):
-        self.assertEqual(get_extension('index.xhtml'), 'xhtml')
-
-    def test_gzipped_tarball(self):
-        self.assertEqual(get_extension('archive.tar.gz'), 'gz')
 
 
 class NormalizeJPEGTests(unittest.TestCase):

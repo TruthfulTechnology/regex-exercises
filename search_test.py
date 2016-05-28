@@ -2,9 +2,46 @@
 import unittest
 
 
-from search import (tetravocalic, hexadecimal, hexaconsonantal, possible_words,
-                    five_repeats, abbreviate, palindrome5, double_double,
-                    repeaters)
+from search import (get_extension, hexadecimal, tetravocalic, hexaconsonantal,
+                    possible_words, five_repeats, abbreviate, palindrome5,
+                    double_double, repeaters)
+
+
+class GetExtensionTests(unittest.TestCase):
+
+    def test_zip(self):
+        self.assertEqual(get_extension('archive.zip'), 'zip')
+
+    def test_jpeg(self):
+        self.assertEqual(get_extension('image.jpeg'), 'jpeg')
+
+    def test_xhtml(self):
+        self.assertEqual(get_extension('index.xhtml'), 'xhtml')
+
+    def test_gzipped_tarball(self):
+        self.assertEqual(get_extension('archive.tar.gz'), 'gz')
+
+
+class HexadecimalTests(unittest.TestCase):
+
+    def test_cab(self):
+        self.assertEqual(hexadecimal('cab'), ['cab'])
+
+    def test_bed(self):
+        self.assertEqual(hexadecimal('bed'), ['bed'])
+
+    def test_cog(self):
+        self.assertEqual(hexadecimal('cog'), [])
+
+    def test_deed(self):
+        self.assertEqual(hexadecimal('deed'), ['deed'])
+
+    def test_sentence(self):
+        sentence = "Hooligans defaced the cafe."
+        self.assertEqual(
+            hexadecimal(sentence.replace(' ', '\n')),
+            ['defaced', 'cafe']
+        )
 
 
 class TetravocalicTests(unittest.TestCase):
@@ -29,28 +66,6 @@ class TetravocalicTests(unittest.TestCase):
         self.assertEqual(
             tetravocalic(sentence.replace(' ', '\n')),
             ['gooier', 'gooiest']
-        )
-
-
-class HexadecimalTests(unittest.TestCase):
-
-    def test_cab(self):
-        self.assertEqual(hexadecimal('cab'), ['cab'])
-
-    def test_bed(self):
-        self.assertEqual(hexadecimal('bed'), ['bed'])
-
-    def test_cog(self):
-        self.assertEqual(hexadecimal('cog'), [])
-
-    def test_deed(self):
-        self.assertEqual(hexadecimal('deed'), ['deed'])
-
-    def test_sentence(self):
-        sentence = "Hooligans defaced the cafe."
-        self.assertEqual(
-            hexadecimal(sentence.replace(' ', '\n')),
-            ['defaced', 'cafe']
         )
 
 
