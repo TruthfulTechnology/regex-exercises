@@ -10,6 +10,10 @@ with open('dictionary.txt') as dict_file:
     dictionary = dict_file.read()
 
 
+def get_extension(filename):
+    """Return the file extension for a full file path."""
+
+
 def tetravocalic(dictionary=dictionary):
     """Return a list of all words that have four consecutive vowels."""
 
