@@ -11,14 +11,19 @@ with open('dictionary.txt') as dict_file:
     dictionary = dict_file.read()
 
 
-def tetravocalic(dictionary=dictionary):
-    """Return a list of all words that have four consecutive vowels."""
-    return re.findall(r'\b.*[aeiou]{4}.*\b', dictionary)
+def get_extension(filename):
+    """Return the file extension for a full file path."""
+    return re.search(r'\.(\w+)$', filename).group(1)
 
 
 def hexadecimal(dictionary=dictionary):
     """Return a list of all words consisting solely of the letters A to F."""
-    return re.findall(r'\b[a-f\d]+\b', dictionary)
+    return re.findall(r'\b[a-f]+\b', dictionary)
+
+
+def tetravocalic(dictionary=dictionary):
+    """Return a list of all words that have four consecutive vowels."""
+    return re.findall(r'\b[a-z]*[aeiou]{4}[a-z]*\b', dictionary)
 
 
 def hexaconsonantal(dictionary=dictionary):

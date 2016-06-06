@@ -7,11 +7,6 @@ These functions return a new altered version of the given string.
 import re
 
 
-def get_extension(filename):
-    """Return the file extension for a full file path."""
-    return re.search(r'([^.]*)$', filename).group()
-
-
 def normalize_jpeg(filename):
     """Return the filename with jpeg extensions normalized."""
     return re.sub(r'\.jpe?g$', r'.jpg', filename, flags=re.IGNORECASE)
