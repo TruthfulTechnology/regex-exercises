@@ -4,6 +4,7 @@ Search Exercises
 These functions return a list of strings matching a condition.
 
 """
+import re
 
 
 with open('dictionary.txt') as dict_file:
@@ -12,59 +13,29 @@ with open('dictionary.txt') as dict_file:
 
 def get_extension(filename):
     """Return the file extension for a full file path."""
-
-
-def tetravocalic(dictionary=dictionary):
-    """Return a list of all words that have four consecutive vowels."""
+    regex = r''  # FIXME put regular expression here
+    return re.search(regex, filename).group(1)
 
 
 def hexadecimal(dictionary=dictionary):
     """Return a list of all words consisting solely of the letters A to F."""
+    regex = r''  # FIXME put regular expression here
+    return re.findall(regex, dictionary)
+
+
+def tetravocalic(dictionary=dictionary):
+    """Return a list of all words that have four consecutive vowels."""
+    regex = r''  # FIXME put regular expression here
+    return re.findall(regex, dictionary)
 
 
 def hexaconsonantal(dictionary=dictionary):
     """Return a list of all words with six consecutive consonants."""
-
-
-def possible_words(partial_word, dictionary=dictionary):
-    """
-    Return possible word matches from a partial word.
-
-    Underscores in partial words represent missing letters.  Examples:
-        C_T (cat, cot, cut)
-        _X_ (axe)
-    """
+    regex = r''  # FIXME put regular expression here
+    return re.findall(regex, dictionary)
 
 
 def five_repeats(letter, dictionary=dictionary):
     """Return all words with at least five occurrences of the given letter."""
-
-
-def abbreviate(phrase):
-    """Return an acronym for the given phrase."""
-
-
-def palindrome5(dictionary=dictionary):
-    """Return a list of all five letter palindromes."""
-
-
-def double_double(dictionary=dictionary):
-    """
-    Return words with a double repeated letter with one letter between.
-
-    Example double double words:
-    - freebee
-    - assessed
-    - voodoo
-    """
-
-
-def repeaters(dictionary=dictionary):
-    """
-    Return words that consist of the same letters repeated two times.
-
-    Example double double words:
-    - tutu
-    - cancan
-    - murmur
-    """
+    regex = r''  # FIXME put regular expression here
+    return re.findall(regex.format(letter), dictionary)
