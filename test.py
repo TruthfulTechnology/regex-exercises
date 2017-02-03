@@ -1,88 +1,111 @@
-#!/usr/bin/env python3
-from collections import OrderedDict
+#!/usr/bin/env python
+from collections import OrderedDict, defaultdict
+import inspect
+from importlib import import_module as import_test_module
+import os
+import re
 import sys
 import unittest
 
-
-TESTS = OrderedDict([
-    ('has_vowel', 'validation_test.HasVowelTests'),
-    ('is_integer', 'validation_test.IsIntegerTests'),
-    ('is_fraction', 'validation_test.IsFractionTests'),
-    ('get_extension', 'search_test.GetExtensionTests'),
-    ('hexadecimal', 'search_test.HexadecimalTests'),
-    ('tetravocalic', 'search_test.TetravocalicTests'),
-    ('hexaconsonantal', 'search_test.HexaconsonantalTests'),
-    ('possible_words', 'search_test.PossibleWordsTests'),
-    ('five_repeats', 'search_test.FiveRepeatsTests'),
-    ('is_number', 'validation_test.IsNumberTests'),
-    ('is_hex_color', 'validation_test.IsHexColorTests'),
-    ('is_valid_date', 'validation_test.IsValidDateTests'),
-    ('abbreviate', 'search_test.AbbreviateTests'),
-    ('palindrome5', 'search_test.PalindromeTests'),
-    ('double_double', 'search_test.DoubleDoubleTests'),
-    ('repeaters', 'search_test.RepeatersTests'),
-    ('normalize_jpeg', 'substitution_test.NormalizeJPEGTests'),
-    ('normalize_whitespace', 'substitution_test.NormalizeWhitespaceTests'),
-    ('compress_blank_lines', 'substitution_test.CompressBlankLinesTests'),
-    ('normalize_domain', 'substitution_test.NormalizeDomainTests'),
-    ('convert_linebreaks', 'substitution_test.ConvertLinebreaksTests'),
-    ('have_all_vowels', 'lookahead_test.HaveAllVowelsTests'),
-    ('no_repeats', 'lookahead_test.NoRepeatsTests'),
-    ('to_pig_latin', 'lookahead_test.ToPigLatinTests'),
-    ('encode_ampersands', 'lookahead_test.EncodeAmpersandsTests'),
-    ('camel_to_underscore', 'lookahead_test.CamelToUnderscoreTests'),
-    ('get_inline_links', 'lookahead_test.GetInlineLinksTests'),
-    ('find_broken_links', 'lookahead_test.FindBrokenLinksTests'),
-    ('get_markdown_links', 'lookahead_test.GetMarkdownLinksTests'),
-])
+from helpers import import_module, ModuleTestCase
 
 
-def get_function(func_id):
-    """Return function name given a name or number."""
-    try:
-        n = int(func_id) - 1
-    except ValueError:
-        if func_id in TESTS:
-            return func_id
-    else:
-        try:
-            return list(TESTS.keys())[n]
-        except IndexError:
-            pass
-    raise SystemExit("Function {} doesn't exist.".format(func_id))
+def get_test_modules(directory):
+    test_files = (
+        f
+        for f in os.listdir(directory)
+        if f.endswith('_test.py')
+    )
+    return (re.sub(r'^(.*)\.py$', r'\1', f) for f in test_files)
 
 
-def load_test(func_name):
-    print("Testing function {}\n".format(func_name))
-    tests = [unittest.defaultTestLoader.loadTestsFromName(TESTS[func_name])]
+class DummyObject:
+    ""
+
+
+def get_test_classes(module_name):
+    module = import_test_module(module_name)
+    module_members = OrderedDict(inspect.getmembers(module))
+    classes = (
+        value
+        for name, value in module_members.items()
+        if inspect.isclass(value)
+        and issubclass(value, unittest.TestCase)
+        and not value == ModuleTestCase
+    )
+    for cls in classes:
+        if issubclass(cls, ModuleTestCase):
+            try:
+                module = import_module(cls.module_path)
+            except BaseException:
+                module = type(cls.module_path, (), {})
+            thing = module
+        else:
+            doc = cls.__doc__
+            if not doc:
+                raise SystemExit("{module}.{cls} has no docstring.".format(
+                    module=module_name,
+                    cls=cls.__name__,
+                ))
+            thing_name = re.search(r' (\w+)\.$', doc).group(1)
+            thing = module_members[thing_name]
+        class_path = ".".join([module_name, cls.__name__])
+        yield (thing, class_path)
+
+
+def get_tests():
+    test_modules = defaultdict(list)
+    test_classes = OrderedDict()
+    directory = os.path.dirname(os.path.realpath(__file__))
+    for test_module_name in get_test_modules(directory):
+        classes = get_test_classes(test_module_name)
+        for subject, class_path in classes:
+            test_classes[subject.__name__] = class_path
+            test_modules[test_module_name[:-5]].append(subject)
+    return test_modules, test_classes
+
+
+MODULES, TESTS = get_tests()
+assert len([x for items in MODULES.values() for x in items]) == len(TESTS)
+
+
+def get_test(obj_name):
+    if obj_name not in TESTS:
+        raise SystemExit("Test for {} doesn't exist.".format(obj_name))
+    return unittest.defaultTestLoader.loadTestsFromName(TESTS[obj_name])
+
+def run_tests(tests):
     test_suite = unittest.TestSuite(tests)
     unittest.TextTestRunner().run(test_suite)
 
 
-def print_function_names():
-    print("Functions that may be tested:")
-    for n, (function_name, test_class_name) in enumerate(TESTS.items(), 1):
-        module_name = test_class_name.split('.', 1)[0]
-        function = getattr(__import__(module_name), function_name)
-        print("[{n:02d}]  {name}: {doc}".format(
-            n=n,
-            name=function.__name__,
-            doc=function.__doc__.strip().split('\n', 1)[0],
+def print_object_names():
+    for module_name, subjects in MODULES.items():
+        print("\n{module_name}:\n".format(
+            module_name=module_name,
         ))
+        for subject in subjects:
+            doc = subject.__doc__ or 'no documentation'
+            print("{name}: {doc}".format(
+                name=subject.__name__,
 
-
-def get_function_name():
-    print("Please select a function to test\n")
-    print_function_names()
-    print("")
-    return input("What function would you like to test? ")
+                doc=doc.strip().split('\n', 1)[0],
+            ))
 
 
 def main(*arguments):
+    if '--all' in arguments:
+        arguments = list(TESTS)
     if not arguments:
-        arguments = [get_function_name()]
-    for arg in arguments:
-        load_test(get_function(arg))
+        print("Please select a thing to test")
+        print_object_names()
+    else:
+        tests = [
+            get_test(arg)
+            for arg in arguments
+        ]
+        print("Testing {}\n".format(', '.join(arguments)))
+        run_tests(tests)
 
 
 if __name__ == "__main__":

@@ -10,6 +10,8 @@ from lookahead import (have_all_vowels, no_repeats, encode_ampersands,
 
 class HaveAllVowelsTests(unittest.TestCase):
 
+    """Tests for have_all_vowels."""
+
     def test_vowels_in_order(self):
         self.assertEqual(have_all_vowels("facetious"), ['facetious'])
 
@@ -26,6 +28,8 @@ class HaveAllVowelsTests(unittest.TestCase):
 
 class NoRepeatsTests(unittest.TestCase):
 
+    """Tests for no_repeats."""
+
     def test_background(self):
         self.assertEqual(no_repeats("background"), ['background'])
 
@@ -41,6 +45,8 @@ class NoRepeatsTests(unittest.TestCase):
 
 
 class EncodeAmpersandsTests(unittest.TestCase):
+
+    """Tests for encode_ampersands."""
 
     def test_a_and_w(self):
         self.assertEqual(encode_ampersands("A&W"), "A&amp;W")
@@ -61,6 +67,8 @@ class EncodeAmpersandsTests(unittest.TestCase):
 
 
 class ToPigLatinTests(unittest.TestCase):
+
+    """Tests for to_pig_latin."""
 
     def test_apple(self):
         self.assertEqual(to_pig_latin("apple"), 'appleay')
@@ -89,6 +97,8 @@ class ToPigLatinTests(unittest.TestCase):
 
 class CamelToUnderscoreTests(unittest.TestCase):
 
+    """Tests for camel_to_underscore."""
+
     def test_index_of(self):
         self.assertEqual(camel_to_underscore("indexOf"), "index_of")
 
@@ -110,6 +120,8 @@ class CamelToUnderscoreTests(unittest.TestCase):
 
 class GetInlineLinksTests(unittest.TestCase):
 
+    """Tests for get_inline_links."""
+
     def test_multiple_links(self):
         markdown = dedent("""
             [Python](https://www.python.org)
@@ -122,6 +134,8 @@ class GetInlineLinksTests(unittest.TestCase):
 
 
 class FindBrokenLinksTests(unittest.TestCase):
+
+    """Tests for find_broken_links."""
 
     def test_multiple_links(self):
         markdown = dedent("""
@@ -145,6 +159,8 @@ class FindBrokenLinksTests(unittest.TestCase):
 
 
 class GetMarkdownLinksTests(unittest.TestCase):
+
+    """Tests for get_markdown_links."""
 
     def test_multiple_links(self):
         markdown = dedent("""

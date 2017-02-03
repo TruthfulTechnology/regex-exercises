@@ -2,11 +2,13 @@
 import unittest
 
 
-from validation import (has_vowel, is_integer, is_fraction, is_number,
-                        is_hex_color, is_valid_date)
+from validation import (has_vowel, is_integer, is_fraction, is_valid_time,
+                        is_valid_date, is_number, is_hex_color)
 
 
 class HasVowelTests(unittest.TestCase):
+
+    """Tests for has_vowel."""
 
     def test_rhythm(self):
         self.assertFalse(has_vowel("rhythm"))
@@ -31,6 +33,8 @@ class HasVowelTests(unittest.TestCase):
 
 
 class IsIntegerTests(unittest.TestCase):
+
+    """Tests for is_integer."""
 
     def test_single_digit(self):
         self.assertTrue(is_integer("5"))
@@ -67,6 +71,8 @@ class IsIntegerTests(unittest.TestCase):
 
 
 class IsFractionTests(unittest.TestCase):
+
+    """Tests for is_fraction."""
 
     def test_5000(self):
         self.assertFalse(is_fraction("5000"))
@@ -108,7 +114,55 @@ class IsFractionTests(unittest.TestCase):
         self.assertFalse(is_fraction("5a"))
 
 
+class IsValidTimeTests(unittest.TestCase):
+
+    """Tests for is_valid_time."""
+
+    def test_middle_of_the_night(self):
+        self.assertTrue(is_valid_time("01:37"))
+
+    def test_after_midnight(self):
+        self.assertTrue(is_valid_time("00:19"))
+
+    def test_before_midnight(self):
+        self.assertTrue(is_valid_time("23:59"))
+
+    def test_invalid_minutes(self):
+        self.assertFalse(is_valid_time("10:60"))
+
+    def test_invalid_hours(self):
+        self.assertFalse(is_valid_time("24:00"))
+
+
+class IsValidDateTests(unittest.TestCase):
+
+    """Tests for is_valid_date."""
+
+    def test_this_year(self):
+        self.assertTrue(is_valid_date("2016-01-02"))
+
+    def test_1990(self):
+        self.assertTrue(is_valid_date("1900-01-01"))
+
+    def test_invalid_day(self):
+        self.assertFalse(is_valid_date("2016-02-99"))
+
+    def test_invalid_year(self):
+        self.assertFalse(is_valid_date("20-02-20"))
+
+    def test_invalid_month(self):
+        self.assertFalse(is_valid_date("1980-30-05"))
+
+    def test_leading_garbage(self):
+        self.assertFalse(is_valid_date("12016-01-02"))
+
+    def test_trailing_garbage(self):
+        self.assertFalse(is_valid_date("2016-01-020"))
+
+
 class IsNumberTests(unittest.TestCase):
+
+    """Tests for is_number."""
 
     def test_5(self):
         self.assertTrue(is_number("5"))
@@ -142,6 +196,8 @@ class IsNumberTests(unittest.TestCase):
 
 
 class IsHexColorTests(unittest.TestCase):
+
+    """Tests for is_hex_color."""
 
     def test_purple_short(self):
         self.assertTrue(is_hex_color("#639"))
@@ -181,30 +237,6 @@ class IsHexColorTests(unittest.TestCase):
 
     def test_leading_garbage(self):
         self.assertFalse(is_hex_color("a#639"))
-
-
-class IsValidDateTests(unittest.TestCase):
-
-    def test_this_year(self):
-        self.assertTrue(is_valid_date("2016-01-02"))
-
-    def test_1990(self):
-        self.assertTrue(is_valid_date("1900-01-01"))
-
-    def test_invalid_day(self):
-        self.assertFalse(is_valid_date("2016-02-99"))
-
-    def test_invalid_year(self):
-        self.assertFalse(is_valid_date("20-02-20"))
-
-    def test_invalid_month(self):
-        self.assertFalse(is_valid_date("1980-30-05"))
-
-    def test_leading_garbage(self):
-        self.assertFalse(is_valid_date("12016-01-02"))
-
-    def test_trailing_garbage(self):
-        self.assertFalse(is_valid_date("2016-01-020"))
 
 
 if __name__ == "__main__":

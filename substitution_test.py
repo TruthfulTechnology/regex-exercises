@@ -3,12 +3,31 @@ from textwrap import dedent
 import unittest
 
 
-from substitution import (normalize_jpeg, normalize_whitespace,
+from substitution import (get_extension, normalize_jpeg, normalize_whitespace,
                           compress_blank_lines, normalize_domain,
                           convert_linebreaks)
 
 
+class GetExtensionTests(unittest.TestCase):
+
+    """Tests for get_extension."""
+
+    def test_zip(self):
+        self.assertEqual(get_extension('archive.zip'), 'zip')
+
+    def test_jpeg(self):
+        self.assertEqual(get_extension('image.jpeg'), 'jpeg')
+
+    def test_xhtml(self):
+        self.assertEqual(get_extension('index.xhtml'), 'xhtml')
+
+    def test_gzipped_tarball(self):
+        self.assertEqual(get_extension('archive.tar.gz'), 'gz')
+
+
 class NormalizeJPEGTests(unittest.TestCase):
+
+    """Tests for normalize_jpeg."""
 
     def test_jpeg(self):
         self.assertEqual(normalize_jpeg('avatar.jpeg'), 'avatar.jpg')
@@ -24,6 +43,8 @@ class NormalizeJPEGTests(unittest.TestCase):
 
 
 class NormalizeWhitespaceTests(unittest.TestCase):
+
+    """Tests for normalize_whitespace."""
 
     def test_two_spaces(self):
         self.assertEqual(normalize_whitespace("hello  there"), "hello there")
@@ -51,6 +72,8 @@ class NormalizeWhitespaceTests(unittest.TestCase):
 
 class CompressBlankLinesTests(unittest.TestCase):
 
+    """Tests for compress_blank_lines."""
+
     def test_one_blank(self):
         self.assertEqual(
             compress_blank_lines("a\n\nb", max_blanks=1),
@@ -77,6 +100,8 @@ class CompressBlankLinesTests(unittest.TestCase):
 
 
 class NormalizeDomainTests(unittest.TestCase):
+
+    """Tests for normalize_domain."""
 
     def test_http(self):
         self.assertEqual(
@@ -110,6 +135,8 @@ class NormalizeDomainTests(unittest.TestCase):
 
 
 class ConvertLinebreaksTests(unittest.TestCase):
+
+    """Tests for convert_linebreaks."""
 
     def test_one_paragraph(self):
         self.assertEqual(
