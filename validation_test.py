@@ -133,6 +133,12 @@ class IsValidTimeTests(unittest.TestCase):
     def test_invalid_hours(self):
         self.assertFalse(is_valid_time("24:00"))
 
+    def test_leading_garbage(self):
+        self.assertFalse(is_valid_time("001:37"))
+
+    def test_trailing_garbage(self):
+        self.assertFalse(is_valid_time("01:000"))
+
 
 class IsValidDateTests(unittest.TestCase):
 
