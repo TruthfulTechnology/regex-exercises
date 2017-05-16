@@ -1,7 +1,7 @@
 Regular Expression Exercises
 ============================
 
-These exercises accompany the Regular Expressions tutorial presented by `Trey Hunner`_ at PyCon 2016.
+These exercises accompany the Regular Expressions tutorial presented by `Trey Hunner`_ at PyCon 2017.
 
 
 Testing an exercise by name
@@ -19,6 +19,7 @@ Testing an exercise by name
     OK
 
 You will see ``OK`` if your code passes the tests and ``FAILED`` if your code fails one or more tests.
+
 
 Forgot the exercise name?
 -------------------------
