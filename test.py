@@ -1,7 +1,14 @@
 #!/usr/bin/env python3
+from __future__ import print_function
 from collections import OrderedDict
 import sys
 import unittest
+
+# Python 2
+try:
+    input = raw_input
+except NameError:
+    pass
 
 
 TESTS = OrderedDict([
